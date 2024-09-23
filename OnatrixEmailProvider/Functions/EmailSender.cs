@@ -10,8 +10,10 @@ using Azure.Communication.Email;
 
 namespace OnatrixEmailProvider.Functions
 {
-    public class EmailSender
+    public class EmailSender(EmailClient emailClient)
     {
+        private readonly EmailClient _client = emailClient;
+
         [FunctionName("EmailSender")]
         public async Task Run([ServiceBusTrigger("email_request", Connection = "ServiceBusSender")]string message, ILogger log)
         {
@@ -56,9 +58,7 @@ namespace OnatrixEmailProvider.Functions
 
             try
             {
-                var _clinet = new EmailClient(Environment.GetEnvironmentVariable("CommunicationServices"));
-
-                var response = await _clinet.SendAsync(WaitUntil.Completed, emailMessage);
+                var response = await _client.SendAsync(WaitUntil.Completed, emailMessage);
 
                 if (response.HasCompleted)
                 {
