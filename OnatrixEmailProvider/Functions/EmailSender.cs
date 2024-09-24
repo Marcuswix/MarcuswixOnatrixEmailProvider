@@ -55,7 +55,6 @@ namespace OnatrixEmailProvider.Functions
             var sender = Environment.GetEnvironmentVariable("SenderDomain");
 
             var emailMessage = new EmailMessage(sender, recipientEmail, emailContent);
-
             try
             {
                 var response = await _client.SendAsync(WaitUntil.Completed, emailMessage);
