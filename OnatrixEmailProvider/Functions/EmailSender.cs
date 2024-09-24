@@ -10,9 +10,14 @@ using Azure.Communication.Email;
 
 namespace OnatrixEmailProvider.Functions
 {
-    public class EmailSender(EmailClient emailClient)
+    public class EmailSender
     {
-        private readonly EmailClient _client = emailClient;
+        private readonly EmailClient _client;
+
+        public EmailSender(EmailClient client)
+        {
+            _client = client;
+        }
 
         [FunctionName("EmailSender")]
         public async Task Run([ServiceBusTrigger("email_request", Connection = "ServiceBusSender")]string message, ILogger log)
